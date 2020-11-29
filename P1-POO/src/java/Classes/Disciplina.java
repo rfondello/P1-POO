@@ -20,9 +20,7 @@ import java.util.ArrayList;
  */
 public class Disciplina {
 
-    public static Object getDisciplina() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
     
     private String nome;
     private String ementa;
