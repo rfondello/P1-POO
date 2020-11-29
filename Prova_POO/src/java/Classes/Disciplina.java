@@ -15,8 +15,7 @@ public class Disciplina {
     String nome;
     String ementa;
     String ciclo;
-    
-    int nota;
+    String nota;
 
     public String getNome() {
         return nome;
@@ -42,11 +41,11 @@ public class Disciplina {
         this.ciclo = ciclo;
     }
 
-    public int getNota() {
+    public String getNota() {
         return nota;
     }
 
-    public void setNota(int nota) {
+    public void setNota(String nota) {
         this.nota = nota;
     }
     
