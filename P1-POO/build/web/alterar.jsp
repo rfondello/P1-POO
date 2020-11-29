@@ -1,7 +1,7 @@
 <%-- 
     Document   : alterar
     Created on : 1 de out de 2020, 13:29:34
-    Author     : angelo
+    Author     : Rodrigo Fondello
 --%>
 
 <%@page import="Classes.Disciplina"%>
