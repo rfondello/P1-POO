@@ -1,12 +1,13 @@
 <%-- 
     Document   : disciplinas
     Created on : 1 de out de 2020, 13:05:46
-    Author     : angelo
+    Author     : Rgrigo Fondello
 --%>
 
 <%@page import="Classes.Disciplina"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,7 +36,7 @@
                 <%int i = disciplina.getDisciplinas().indexOf(disciplina);%>
                 <a href="alterar.jsp?i=<%=i%>">Alterar</a>
             </td>
-           
+            
             </tr>
             <%}%>
         </table>
