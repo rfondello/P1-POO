@@ -6,9 +6,9 @@
 package web;
 
 import Classes.Disciplina;
-import java.sql.Connection;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.sql.*;
 
 /**
  * Web application lifecycle listener.
@@ -19,7 +19,11 @@ public class DbListener implements ServletContextListener {
 
     private static final String CLASS_NAME = "org.sqlite.JDBC";
     private static final String DB_URL = "jdbc:sqlite:banco";
-    private static final String exceptionMessage = null; 
+    private static String exceptionMessage = null; 
+    
+    public static Connection getConnection() throws Exception{
+        return DriverManager.getConnection(DB_URL);
+    }
     
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -34,7 +38,7 @@ public class DbListener implements ServletContextListener {
         stmt = con.createStatement();
         etapa = "Criar tabela Disciplinas";
         stmt.execute(Disciplina.getCreateStatement());
-        if(Disciplina.getList().isEmpty){
+        if(Disciplina.getList().isEmpty()){
         
             etapa = "Criar primeiro registro";
             stmt.execute("INSERT INTO disciplinas VALUES("
@@ -42,9 +46,7 @@ public class DbListener implements ServletContextListener {
             + "Ementa BD,"
             + "5,"
             + "8,"
-            +")"
-            );
-            
+            +")");      
         }
         etapa = "Desconectando do banco";
         }
@@ -63,4 +65,5 @@ public class DbListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

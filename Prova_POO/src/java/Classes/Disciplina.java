@@ -5,10 +5,7 @@
  */
 package Classes;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import web.DbListener;
 
@@ -17,6 +14,8 @@ import web.DbListener;
  * @author Rodrigo Alves Fondello
  */
 public class Disciplina {
+
+
     long rowlid;
     String nome;
     String ementa;
@@ -36,8 +35,7 @@ public class Disciplina {
     Connection con = null;
     Statement stmt = null;
     ResultSet rs = null;
-    Exception metohodException = null;
-    
+    Exception methodException = null; 
     try{
     con = DbListener.getConnection();
     stmt = con.createStatement();
@@ -51,7 +49,8 @@ public class Disciplina {
     rs.getDouble("nota")
     ));
     }
-        catch(Exception ex){
+    }
+            catch(Exception ex){
          methodException = ex;   
         }
         finally{
@@ -61,7 +60,6 @@ public class Disciplina {
         }
         if(methodException != null) throw methodException;
         return list;
-    }
     }
     
         
@@ -180,7 +178,14 @@ public class Disciplina {
         this.nota = nota;
     }
 
-    
+    public static String getCreateStatement(){
+        return "CREATE TABLE IF NOT EXISTS disciplinas("
+                + "nome VARCHAR(50) NOT NULL,"
+                + "ementa VARCHAR(500) NOT NULL,"
+                + "ciclo NUMBER(2) NOT NULL,"
+                + "nota NUMBER(2,2) DEFAULT 0"
+                + ")";
+    }
     
     }
     
