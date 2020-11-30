@@ -15,47 +15,117 @@
     <body>
        
         <%
-        if(request.getParameter("salvar")!= null){
-         int codigo = Integer.parseInt(request.getParameter("codigo"));
-         int nota = Integer.parseInt(request.getParameter("nota"));
-         Disciplina disciplina = Disciplina.getDisciplina().get(codigo);
-         disciplina.setNota(nota);
+        String exceptionMessage = null;
+        if(request.getParameter("FormInsert")!=null){
+            try{
+            String nome = request.getParameter("nome");
+            String ementa = request.getParameter("ementa");
+            int ciclo = Integer.parseInt(request.getParameter("ciclo"));
+            Double nota = Double.parseDouble(request.getParameter("nota"));
+            Disciplina.insert(nome, ementa, ciclo, nota);
+            response.sendRedirect(request.getRequestURI());
+            }catch(Exception ex){
+                exceptionMessage = ex.getLocalizedMessage();
+            }
+        }
+         if(request.getParameter("FormUpdate")!=null){
+            try{
+            long rowlid =  Long.parseLong(request.getParameter("rowlid"));
+            String nome = request.getParameter("nome");
+            String ementa = request.getParameter("ementa");
+            int ciclo = Integer.parseInt(request.getParameter("ciclo"));
+            Double nota = Double.parseDouble(request.getParameter("nota"));
+            Disciplina.insert(nome, ementa, ciclo, nota);
+            response.sendRedirect(request.getRequestURI());
+            }catch(Exception ex){
+                exceptionMessage = ex.getLocalizedMessage();
+            }
+        }
+          if(request.getParameter("FormDelete")!=null){
+            try{
+            long rowlid =  Long.parseLong(request.getParameter("rowlid"));
+            Disciplina.delete(rowlid);
+            response.sendRedirect(request.getRequestURI());
+            }catch(Exception ex){
+                exceptionMessage = ex.getLocalizedMessage();
+            }
         }
         %> 
         
         <%@include file="WEB-INF/jspf/menu.jspf"%>
         <h1>Disciplinas</h1>
-        
-        <table border ="1">
-    <tr>
-        <th>Nome Disciplina</th>
-        <th>Ementa</th>
-        <th>Ciclo</th>
-        <th>Nota</th>
-        <th>Comandos</th>
-    </tr>  
-    <tr>
-    <% for (int i = 0; i <Disciplina.getDisciplina().size(); i++){
-        Disciplina disciplina = (Disciplina)Disciplina.getDisciplina().get(i);%>
-        <td><%= disciplina.getNome()%></td>
-        <td><%= disciplina.getEmenta()%></td>
-        <td><%= disciplina.getCiclo()%></td>
-        <td><%= disciplina.getNota()%></td>
-    
-        <td>
-            <form metohod="get">
-                <input type ="text" name="nota" value="0"/>
-                <input type ="submit"  value="Salvar"/>
-                <input type ="hidden"  value="salvar" value ="1"/>
-                <input type ="hidden" name="codigo" value="<%=i%>"/>
-            </form>
+        <%if(request.getParameter("prepararInsert")!=null){%>
+        <h3>Incluir Disciplina</h3>
+        <form>
+            Nome:<input type="text" name="nome">
+            Ementa:<input type="text" name="ementa">
+            Ciclo:<input type="text" name="ciclo">
+            Nota:<input type="text" name="nota">
             
-        </td>
-    </tr>
-    
-    
+            <input type="submit" name="FormInsert" value="Inserir"/>
+            <input type="submit" name="Cancelar" value="Canselar"/>
+        </form>
+        <%}else if(request.getParameter("prepararUpdate")!= null){%>
+        <h3>Alterar Disciplina</h3>
+        <form>
+            <%
+            String rowlid = request.getParameter("rowlid");
+            String nome = request.getParameter("nome");
+            String ementa = request.getParameter("ementa");
+            String ciclo = request.getParameter("ciclo");
+            String nota = request.getParameter("nota");
+            %>
+            <input type="hidden" name="rowlid" value="<%=rowlid%>"/>
+            Nome:<input type="text" name="nome" value="<%=nome%>"/>
+            Ementa:<input type="text" name="ementa" value="<%=ementa%>"/>
+            Ciclo:<input type="text" name="ciclo" value="<%=ciclo%>"/>
+            Nota:<input type="text" name="nota" value="<%=nota%>"/>
+            
+            <input type="submit" name="FormUpdate" value="Alterar"/>
+            <input type="submit" name="Cancelar" value="Canselar"/>
+        </form>
+        <%}else if(request.getParameter("prepararDelete")!=null){%>
+        <h3>Excluir Disciplina</h3>
+        <form>
+            <%String rowlid = request.getParameter("rowlid");%>
+            <input type="hidden" name="rowlid" value="<%=rowlid%>"/>
+            Excluir a disciplina <b><%=rowlid%><b>?
+            <input type="submit" name="FormDelete" value="Deletar"/>
+            <input type="submit" name="Cancelar" value="Canselar"/>
+        </form>
+        <%}else{%>
+        <form method="post">
+            <input type="submit" name="prepararInsert" value="Inserir"/>
+        </form>
         <%}%>
+        <h3>Lista de Disciplinas</h3>
+        <table border="1">
+            <tr>
+                <th>Indice</th>
+                <th>Disciplina</th>
+                <th>Ementa</th>
+                <th>Ciclo</th>
+                <th>Nota</th>
+            </tr>
+            <%for(Disciplina d: Disciplina.getList()){%>
+            <tr>
+                <th><%=d.getRowlid()%></th>
+                <th><%=d.getNome()%></th>
+                <th><%=d.getEmenta()%></th>
+                <th><%=d.getCiclo()%></th>
+                <th><%=d.getNota()%></th>
+            </tr>
+            <th>
+            <form>
+                 <input type="hidden" name="rowlid" value="<%=d.getRowlid()%>"/>
+                  <input type="hidden" name="nome" value="<%=d.getNome()%>"/>
+                   <input type="hidden" name="ementa" value="<%=d.getEmenta()%>"/>
+                    <input type="hidden" name="cilco" value="<%=d.getCiclo()%>"/>
+                     <input type="hidden" name="nota" value="<%=d.getNota()%>"/>
+            </form>
+            </th>
+            <%}%>
         </table>
-    
+        <%@include file="WEB-INF/jspf/menu.jspf"%>
     </body>
 </html>
